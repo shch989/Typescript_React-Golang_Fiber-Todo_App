@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 type Todo struct {
@@ -19,8 +20,16 @@ func main() {
 
 	app := fiber.New()
 
+	// Cors
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "http://localhost:5173",
+		AllowHeaders: "Origin, Content-Type, Accept",
+	}))
+
+	// 임시 데이터베이스
 	todos := []Todo{}
 
+	// Test 출력
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello Fiber!")
 	})
@@ -59,6 +68,7 @@ func main() {
 		return c.JSON(todos)
 	})
 
+	// todo 모든 리스트 출력
 	app.Get("/api/todos", func(c *fiber.Ctx) error {
 		return c.JSON(todos)
 	})
