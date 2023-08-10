@@ -1,39 +1,39 @@
-import { Box, List, ThemeIcon } from "@mantine/core";
-import { CheckCircleFillIcon } from "@primer/octicons-react";
-import useSWR from "swr";
-import "./App.css";
-import AddTodo from "./components/AddTodo";
+import { Box, List, ThemeIcon } from '@mantine/core'
+import { CheckCircleFillIcon } from '@primer/octicons-react'
+import useSWR from 'swr'
+import './App.css'
+import AddTodo from './components/AddTodo'
 
 export interface Todo {
-  id: number;
-  title: string;
-  body: string;
-  done: boolean;
+  id: number
+  title: string
+  body: string
+  done: boolean
 }
 
-export const ENDPOINT = "http://localhost:5000";
+export const ENDPOINT = 'http://localhost:5000'
 
 const fetcher = (url: string) =>
-  fetch(`${ENDPOINT}/${url}`).then((r) => r.json());
+  fetch(`${ENDPOINT}/${url}`).then((r) => r.json())
 
 function App() {
-  const { data, mutate } = useSWR<Todo[]>("api/todos", fetcher);
+  const { data, mutate } = useSWR<Todo[]>('api/todos', fetcher)
 
   async function markTodoAdDone(id: number) {
-    const updated = await fetch(`${ENDPOINT}/api/todosn/${id}/done`, {
-      method: "PATCH",
-    }).then((r) => r.json());
+    const updated = await fetch(`${ENDPOINT}/api/todos/${id}/done`, {
+      method: 'PATCH',
+    }).then((r) => r.json())
 
-    mutate(updated);
+    mutate(updated)
   }
 
   return (
     <Box
       sx={(theme) => ({
-        padding: "2rem",
-        width: "100%",
-        maxWidth: "40rem",
-        margin: "0 auto",
+        padding: '2rem',
+        width: '100%',
+        maxWidth: '40rem',
+        margin: '0 auto',
       })}
     >
       <List spacing="xs" size="sm" mb={12} center>
@@ -56,13 +56,13 @@ function App() {
             >
               {todo.title}
             </List.Item>
-          );
+          )
         })}
       </List>
 
       <AddTodo mutate={mutate} />
     </Box>
-  );
+  )
 }
 
-export default App;
+export default App
